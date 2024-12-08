@@ -43,10 +43,11 @@ def main():
                 result = voter_vote(voter['nic'], voter['name'], voter['district'], voter['electorate'], nominee_id)
                 if "successfully" in result:
                     st.success(result)
-                    st.session_state.voter_verified = False
-                    st.session_state.voter_details = {}
                 else:
                     st.error(result)
+            if st.button("Logout"):
+                st.session_state.voter_verified = False
+                st.session_state.voter_details = {}
 
 if __name__ == "__main__":
     main()

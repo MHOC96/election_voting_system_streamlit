@@ -14,7 +14,6 @@ def get_voter_details(nic):
         voter_details = voter_details_get_cursor.fetchone()
 
         if voter_details:
-            print(voter_details)
             return voter_details, None
         else:
             return None, "User not available in the system, please contact Gramasewaka."
