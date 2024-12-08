@@ -28,7 +28,7 @@ def main():
                             'nic': nic_number, 'name': voter_name, 
                             'district': district, 'electorate': electorate
                         }
-                        st.success("Verification successful! Proceed to vote.")
+                        st.rerun()
                     else:
                         st.warning("Details do not match the database.")
     else:
@@ -48,6 +48,7 @@ def main():
             if st.button("Logout"):
                 st.session_state.voter_verified = False
                 st.session_state.voter_details = {}
+                st.rerun()
 
 if __name__ == "__main__":
     main()

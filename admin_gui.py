@@ -13,7 +13,6 @@ def admin_login_ui():
 
     if st.button("Login"):
         if admin_login(admin_email, admin_password):
-            st.success("Login Successful!")
             st.session_state.logged_in = True
             return True
         else:
@@ -91,13 +90,15 @@ def individual_nominee_vote_ui():
 def admin_dashboard():
     if 'logged_in' not in st.session_state or not st.session_state.logged_in:
         st.session_state.logged_in = False
-        if admin_login_ui():
-            return 
+        login=admin_login_ui()
+        if login:
+            st.rerun()
     else:
         option = st.selectbox("Select an Option:", ["Add Nominee", "View Nominee List", "Top 3 Nominees", "Individual Nominee Vote Count","Logout"])
 
         if option == "Logout":
             st.session_state.logged_in = False
+            st.rerun()
         elif option == "Add Nominee":
             add_nominee_ui()
         elif option == "View Nominee List":
