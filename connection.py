@@ -2,14 +2,20 @@ import os
 
 from sqlalchemy import create_engine, text
 
+try:
+    import streamlit as st
+
+    _STREAMLIT_AVAILABLE = True
+except ImportError:
+    _STREAMLIT_AVAILABLE = False
+
 
 def get_database_url():
-    try:
-        import streamlit as st
-
-        return st.secrets["DATABASE_URL"]
-    except Exception:
-        pass
+    if _STREAMLIT_AVAILABLE:
+        try:
+            return st.secrets["DATABASE_URL"]
+        except Exception:
+            pass
 
     url = os.environ.get("DATABASE_URL")
     if url:
@@ -20,11 +26,22 @@ def get_database_url():
     )
 
 
+def _create_engine():
+    return create_engine(get_database_url(), pool_pre_ping=True)
+
+
+if _STREAMLIT_AVAILABLE:
+
+    @st.cache_resource
+    def get_engine():
+        return _create_engine()
+
+
 def database_connection():
     try:
-        engine = create_engine(get_database_url())
-        print("Successfully connected to Supabase PostgreSQL!")
-        return engine
+        if _STREAMLIT_AVAILABLE:
+            return get_engine()
+        return _create_engine()
     except Exception as e:
         print(f"Connection failed: {e}")
         return None
@@ -37,8 +54,7 @@ if __name__ == "__main__":
 
     if engine:
         with engine.connect() as connection:
-            query = text("SELECT * FROM nominee;")
-            df = pd.read_sql(query, connection)
+            df = pd.read_sql(text("SELECT * FROM nominee"), connection)
 
         print("\n--- Current Nominees ---")
         print(df)

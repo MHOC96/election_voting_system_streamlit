@@ -4,13 +4,13 @@ A web-based election voting application built with [Streamlit](https://streamlit
 
 ## Features
 
-### Voter portal (`voter_gui.py`)
+### Voter portal
 - Verify identity using NIC number against registered voter records
 - View the nominee list
 - Cast a single vote (duplicate votes are blocked)
 - Logout after voting
 
-### Admin dashboard (`admin_gui.py`)
+### Admin dashboard
 - Admin login with email and password
 - Add new nominees
 - View all nominees
@@ -21,13 +21,13 @@ A web-based election voting application built with [Streamlit](https://streamlit
 
 ```
 election_voting_system_streamlit/
+├── app.py                     # Main Streamlit app (voter + admin)
 ├── connection.py              # Database connection (SQLAlchemy + PostgreSQL)
 ├── admin.py                   # Admin authentication and nominee management
 ├── admin_count_functions.py   # Vote counting and leaderboard queries
 ├── voter.py                   # Voter verification and vote submission
-├── admin_gui.py               # Streamlit admin UI
-├── voter_gui.py               # Streamlit voter UI
 ├── requirements.txt           # Python dependencies
+├── .streamlit/secrets.toml    # Local secrets (not committed)
 └── README.md
 ```
 
@@ -64,7 +64,13 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-4. Configure the database connection in `connection.py` or set a `DATABASE_URL` environment variable:
+4. Create `.streamlit/secrets.toml` locally with your database URL:
+
+```toml
+DATABASE_URL = "postgresql://user:password@host:port/database"
+```
+
+Or set a `DATABASE_URL` environment variable:
 
 ```bash
 # Windows PowerShell
@@ -144,19 +150,28 @@ Test the database connection:
 python connection.py
 ```
 
-Run the voter portal:
+Run the application:
 
 ```bash
-streamlit run voter_gui.py
+streamlit run app.py
 ```
 
-Run the admin dashboard:
-
-```bash
-streamlit run admin_gui.py
-```
+Use the sidebar to switch between **Voter Portal** and **Admin Dashboard**.
 
 Streamlit will open the app in your browser (default: `http://localhost:8501`).
+
+## Deploying to Streamlit Cloud
+
+1. Push the repository to GitHub (do not commit `.streamlit/secrets.toml`).
+2. Create a new app at [share.streamlit.io](https://share.streamlit.io).
+3. Set **Main file path** to `app.py`.
+4. In **App settings → Secrets**, add:
+
+```toml
+DATABASE_URL = "postgresql://user:password@host:port/database"
+```
+
+5. Use your Supabase **connection pooler** URL (port `6543`) for cloud deployments.
 
 ## Usage
 
