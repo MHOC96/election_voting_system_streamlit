@@ -1,6 +1,6 @@
 from admin import get_nominee_list
 from connection import database_connection
-from mysql.connector import IntegrityError
+from sqlalchemy.exc import IntegrityError
 
 
 def get_voter_details(nic):

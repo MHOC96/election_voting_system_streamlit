@@ -27,7 +27,7 @@ election_voting_system_streamlit/
 ├── voter.py                   # Voter verification and vote submission
 ├── admin_gui.py               # Streamlit admin UI
 ├── voter_gui.py               # Streamlit voter UI
-├── requirement.txt            # Python dependencies
+├── requirements.txt           # Python dependencies
 └── README.md
 ```
 
@@ -61,8 +61,7 @@ source .venv/bin/activate
 3. Install dependencies:
 
 ```bash
-pip install -r requirement.txt
-pip install psycopg2-binary sqlalchemy
+pip install -r requirements.txt
 ```
 
 4. Configure the database connection in `connection.py` or set a `DATABASE_URL` environment variable:
